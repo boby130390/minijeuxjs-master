@@ -40,7 +40,7 @@ body{
 }
 
 #GamePropalDiv{
-  display: none;
+  display: none;;
 }
 
 @keyframes suspens {

@@ -1,6 +1,7 @@
 //Générer un chiffre en aléatoire
 //L'utilisateur fera des propositions
 //Continuer tant qu'il n'a pas la bonne proposition
+import { Confetti } from "./lib/confetti.js";
 
 let NumberToFind = 0;
 const resultDiv = document.getElementById("resultDiv");
@@ -10,8 +11,8 @@ let TempsRestant = 0;
 let compteurInterval = null;
 
 document.getElementById("beginGame")
-    .addEventListener("click", function(){
-
+  .addEventListener("click", function(){
+    launchGame();
 });
 
 document.getElementById("checkPropalButton")
@@ -23,11 +24,8 @@ document.getElementById("userPropalInput")
   .addEventListener("keyup", function(event){
     if(event.key == 'Enter'){
       checkPropal();
-    }
-  
-    console.log("clavier sur input")
-  
-  });
+    } 
+});
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -49,6 +47,7 @@ function checkPropal(){
   
   else if(NumberToFind == numberPropal){
     resultDiv.innerHTML = "C'est gagné ! ";
+    Confetti.launchAnimationConfetti();
     let audio = new Audio("audio/bip-bip.mp3");
     audio.play();
   }
@@ -56,6 +55,7 @@ function checkPropal(){
 
 function launchGame(){
   NumberToFind = getRandomInt(1000);
+  console.log(NumberToFind);
   TempsRestant = 30;
   GamePropalDiv.style.display = "block";
   if(compteurInterval != null){

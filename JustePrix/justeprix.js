@@ -1,12 +1,12 @@
 //Générer un chiffre en aléatoire
 //L'utilisateur fera des propositions
 //Continuer tant qu'il n'a pas la bonne proposition
-import { Confetti } from "./lib/confetti.js";
+import { Confetti } from "../lib/confetti.js";
 
 let NumberToFind = 0;
 const resultDiv = document.getElementById("resultDiv");
 const reboursDiv = document.getElementById("compteARebours");
-const GamePropalDiv = document.getElementById("GamePropalDiv");
+const GamePropalDiv = document.getElementById("gamePropalDiv");
 let TempsRestant = 0;
 let compteurInterval = null;
 
@@ -50,12 +50,13 @@ function checkPropal(){
     Confetti.launchAnimationConfetti();
     let audio = new Audio("audio/bip-bip.mp3");
     audio.play();
+    endGame();
   }
 }
 
 function launchGame(){
+  Confetti.stopAnimationConfeti();
   NumberToFind = getRandomInt(1000);
-  console.log(NumberToFind);
   TempsRestant = 30;
   GamePropalDiv.style.display = "block";
   if(compteurInterval != null){
@@ -80,16 +81,29 @@ function launchGame(){
       reboursDiv.classList.remove("warning");
       reboursDiv.classList.add("danger");
     }
-    else if(TempsRestant < 0) {
+    else if(TempsRestant < 0){
       clearInterval(compteurInterval);
-      endGame();
+      endGame(false);
     }
         
   }, 1000);
 
 }
 
-function endGame(){
-  GamePropalDiv.style.display= "none";
+function endGame(gagne){
+  if(gagne){
+    Confetti.launchAnimationConfeti();
+      let audio = new Audio("audio/Bipbip.mp3");
+      audio.play();
+      setTimeout(() =>{
+        Confetti.stopAnimationConfeti();
+    }, 5000);
+  }
+  else{
+    let audio = new Audio("audio/perdu.mp3");
+    audio.play();
+  }
+GamePropalDiv.style.display= "none";
+  clearInterval(compteurInterval);
 
 }

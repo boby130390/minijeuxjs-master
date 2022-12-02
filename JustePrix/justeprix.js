@@ -5,42 +5,13 @@
 let NumberToFind = 0;
 const resultDiv = document.getElementById("resultDiv");
 const reboursDiv = document.getElementById("compteARebours");
+const GamePropalDiv = document.getElementById("GamePropalDiv");
 let TempsRestant = 0;
 let compteurInterval = null;
 
 document.getElementById("beginGame")
     .addEventListener("click", function(){
-      NumberToFind = getRandomInt(1000);
-      TempsRestant = 30;
-      if(compteurInterval != null){
-        clearInterval(compteurInterval);
-      }
-      compteurInterval = setInterval(() => {
-          reboursDiv.innerText = TempsRestant;
-          TempsRestant--;
 
-          if(TempsRestant >= 20){
-            reboursDiv.classList.remove("warning");
-            reboursDiv.classList.remove("danger");
-            reboursDiv.classList.add("cool");
-          }
-
-          else if(TempsRestant >= 10){
-            reboursDiv.classList.remove("cool");
-            reboursDiv.classList.remove("danger");
-            reboursDiv.classList.add("warning");
-          }
-          else if(TempsRestant < 10){
-            reboursDiv.classList.remove("cool");
-            reboursDiv.classList.remove("warning");
-            reboursDiv.classList.add("danger");
-          }
-          else if(TempsRestant < 0) {
-            clearInterval(compteurInterval);
-            //Partie terminée
-          }
-        
-      }, 1000);
 });
 
 document.getElementById("checkPropalButton")
@@ -81,4 +52,44 @@ function checkPropal(){
     let audio = new Audio("audio/bip-bip.mp3");
     audio.play();
   }
+}
+
+function launchGame(){
+  NumberToFind = getRandomInt(1000);
+  TempsRestant = 30;
+  GamePropalDiv.style.display = "block";
+  if(compteurInterval != null){
+    clearInterval(compteurInterval);
+  }
+  compteurInterval = setInterval(() => {
+    reboursDiv.innerText = TempsRestant;
+    TempsRestant--;
+
+    if(TempsRestant >= 20){
+      reboursDiv.classList.remove("warning");
+      reboursDiv.classList.remove("danger");
+      reboursDiv.classList.add("cool");
+    }
+    else if(TempsRestant > 10){                       
+      reboursDiv.classList.remove("cool");
+      reboursDiv.classList.remove("danger");
+      reboursDiv.classList.add("warning");
+    }
+    else if(TempsRestant >= 0){
+      reboursDiv.classList.remove("cool");
+      reboursDiv.classList.remove("warning");
+      reboursDiv.classList.add("danger");
+    }
+    else if(TempsRestant < 0) {
+      clearInterval(compteurInterval);
+      endGame();
+    }
+        
+  }, 1000);
+
+}
+
+function endGame(){
+  GamePropalDiv.style.display= "none";
+
 }
